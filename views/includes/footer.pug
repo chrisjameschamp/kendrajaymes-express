@@ -1,0 +1,61 @@
+footer
+      div
+        .contact
+            .logo
+                img(src='/static/img/logodark.png', alt='')
+            ul
+                each item, key in content.social 
+                    li
+                        a(href= item.URL, target='_blank', style='color: ' + item.Highlight_Color + ';')
+                            span.fa(class= item.Icon)
+                            =item.Name
+        .agent
+            .logo
+                img(src='/assets/' + content.agent.Logo, alt='')
+            div
+                div
+                    div
+                        strong Talent Agent Commercial
+                    div= content.agent.Name
+                    .spacer
+                    div
+                        a(href= content.agent.Website)= content.agent.Website
+                div
+                    if (content.agent.Line_1 || content.agent.Line_2 || content.agent.Line_3)
+                        if (content.agent.Line_1)
+                            div= content.agent.Line_1 
+                        if (content.agent.Line_2)
+                            div= content.agent.Line_2 
+                        if (content.agent.Line_3)
+                            div= content.agent.Line_3
+                        .spacer
+                    if (content.agent.Phone_Number)
+                        div
+                            if (content.agent.Phone_Icon)
+                                span.fa(class= content.agent.Phone_Icon)
+                                =`(${content.agent.Phone_Number.slice(0, 3)}) ${content.agent.Phone_Number.slice(3, 6)}-${content.agent.Phone_Number.slice(6)}`
+                            else
+                                span.fa.fa-phone
+                                =`(${content.agent.Phone_Number.slice(0, 3)}) ${content.agent.Phone_Number.slice(3, 6)}-${content.agent.Phone_Number.slice(6)}`
+                    if (content.agent.Fax_Number)
+                        div
+                            if (content.agent.Fax_Icon)
+                                span.fa(class= content.agent.Fax_Icon)
+                                =`(${content.agent.Fax_Number.slice(0, 3)}) ${content.agent.Fax_Number.slice(3, 6)}-${content.agent.Fax_Number.slice(6)}`
+                            else
+                                span.fa.fa-fax
+                                =`(${content.agent.Fax_Number.slice(0, 3)}) ${content.agent.Fax_Number.slice(3, 6)}-${content.agent.Fax_Number.slice(6)}`
+                if (content.agent.Representatives.length > 0)
+                    div
+                        div
+                            strong Representatives
+                        each item, key in content.agent.Representatives
+                            div= item.Name
+                            div
+                                a(href='mailto: ' + item.Email, target='_blank')= item.Email
+div#meta
+    div.title= content.metadata.Site_Name
+    div.image= '/assets/' + content.metadata.Metadata_Image.id + '/' + content.metadata.Metadata_Image.filename_download
+    div.imageWidth= content.metadata.Metadata_Image.width
+    div.imageHeight= content.metadata.Metadata_Image.height
+    div.url= baseUrl

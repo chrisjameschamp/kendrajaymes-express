@@ -1,0 +1,10 @@
+mixin nav()
+    each item, key in content.nav
+        if (item.Destination == content.baseUrl + '/')
+            a.active(href= item.Destination, class= item.Class)= item.Name
+        else
+            a(href= item.Destination, class= item.Class)= item.Name
+
+mixin social()
+    each item, key in content.social 
+        a.fa(class= item.Icon, href= item.URL, target='_blank', style='color: ' + item.Highlight_Color + ';')

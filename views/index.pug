@@ -1,0 +1,83 @@
+include includes/mixins
+
+doctype html
+html(lang="en")
+    head
+        - var pageTitle = content.metadata.Site_Name
+        - var metaImg = '/assets/' + content.metadata.Metadata_Image.id + '/' + content.metadata.Metadata_Image.filename_download
+        - var metaImgWidth = content.metadata.Metadata_Image.width
+        - var metaImgHeight = content.metadata.Metadata_Image.height
+        - var metaDescription = content.metadata.Description
+        - var slug = ''
+        include includes/meta
+        include includes/payload
+    
+    body
+        #wrapper
+            include includes/header
+            .largeImg(style='background-image: url("/assets/' + content.metadata.Primary_Image + '");')
+            .trig1
+            #content 
+                ul.portfolio 
+                    each item, key in content.projects
+                        li(class= item.GIF ? '' : 'hover')
+                            - item.newTitle = '<strong>' + item.Title + '</strong> - ' + item.Subtitle
+                            - item.metadata = []
+                            if (item.Director)
+                                - item.metadata.push('Director <strong>' + item.Director + '</strong>')
+                            if (item.Credits)
+                                each credit, k in item.Credits 
+                                    - item.metadata.push(credit.Title + ' <strong>' + credit.Name + '</strong>')
+                            - item.meta = item.metadata.join(' / ')
+
+                            - var domainMatch = item.Video_URL.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/im);
+                            - var domain = domainMatch && domainMatch[1]
+                            if (domain === 'vimeo.com')
+                                - item.Video_URL = item.Video_URL.substring(item.Video_URL.lastIndexOf('/') + 1)
+                                - item.Video_URL = 'https://player.vimeo.com/video/' + item.Video_URL
+                                - item.Domain = 'vimeo'
+                            else if (domain === 'youtube.com')
+                                - var idMatch = item.Video_URL.match(/(?:\?|\&)v=([^&]+)/);
+                                - item.Video_URL = idMatch && idMatch[1]
+                                - item.Video_URL = 'https://www.youtube.com/embed/' + item.Video_URL
+                                - item.Domain = 'youtube'
+                            if (content.project && content.project.id == item.id)
+                                - content.project = item
+
+                            a(href= item.Video_URL, data-title= item.newTitle, data-meta= item.meta, data-vender= item.Domain, data-slug= item.slug, data-pagetitle= content.metadata.Site_Name + ' | ' + item.Title + ' - ' + item.Subtitle, data-thumbnail='/assets/' + item.Thumbnail + '?width=500&quality=95')
+                                .thumb 
+                                    .bg(style='background-image: url("/assets/' + item.Thumbnail + '?width=500&quality=95")')
+                                    if (item.GIF)
+                                        .gif(style='background-image: url("' + item.GIF + '")')
+                                    .play 
+                                    .load 
+                                        div 
+                                            svg.circular(viewBox='12 12 34 34')
+                                                circle.path(cx='29', cy='29', r='16', fill='none', stroke-width='2', stroke-miterlimit='10')
+                                .title 
+                                    strong= item.Title 
+                                    | - #{item.Subtitle}
+                                    if (item.metadata.length > 0)
+                                        .meta 
+                                            div!= item.metadata[0]
+                                                if (item.metadata.length > 1)
+                                                    br
+                                                    !=item.metadata[1]
+            if (content.project)
+                #overlay.active(style='top: 0; height: 100vh;')
+                    div 
+                        .title!= content.project.newTitle
+                        .video(data-slug= content.project.slug, data-pagetitle= content.metadata.Site_Name + ' | ' + content.project.Title + ' - ' + content.project.Subtitle, data-thumbnail='/assets/' + content.project.Thumbnail + '?width=500&quality=95')
+                            #player.active.plyr__video-embed
+                                iframe(src= content.project.Video_URL + '?autoplay=1', frameborder='0', webkitallowfullscreen, mozallowfullscreen, allowfullscreen)
+                        .meta!= content.project.meta
+                    .close
+            else 
+                #overlay 
+                    div 
+                        .title 
+                        .video 
+                        .meta
+                    .close
+            include includes/footer
+

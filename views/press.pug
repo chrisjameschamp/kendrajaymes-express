@@ -1,0 +1,44 @@
+include includes/mixins
+
+doctype html
+html(lang="en")
+    head
+        - var pageTitle = content.metadata.Site_Name + ' - Press'
+        - var metaImg = '/assets/' + content.metadata.Metadata_Image.id + '/' + content.metadata.Metadata_Image.filename_download
+        - var metaImgWidth = content.metadata.Metadata_Image.width
+        - var metaImgHeight = content.metadata.Metadata_Image.height
+        - var metaDescription = content.metadata.Description
+        - var slug = '/press/'
+        include includes/meta
+        include includes/payload
+
+    body
+        #wrapper
+            include includes/header
+            #content
+                .press 
+                    each item ,key in content.press 
+                        .item
+                            .title 
+                                span= item.Article_Title
+                                if (item.Media_Outlet_Name) 
+                                    | - #{item.Media_Outlet_Name}
+                            .meta 
+                                if (item.Article_URL)
+                                    a(href= item.Article_URL, target='_blank')
+                                        if (item.Media_Outlet_Logo)
+                                            img(src='/assets/' + item.Media_Outlet_Logo + '?width=200&quality=95', alt='')
+                                        else if (item.Media_Outlet_Name)
+                                            span= item.Media_Outlet_Name
+                                        else 
+                                            span Original Article
+                                    span= `${item.Publication_Date.slice(0, 2)}/${item.Publication_Date.slice(2, 4)}/${item.Publication_Date.slice(4)}`
+                                else 
+                                    if (item.Media_Outlet_Logo)
+                                        img(src='/assets/' + item.Media_Outlet_Logo + '?width=200&quality=95', alt='')
+                                    else if (item.Media_Outlet_Name)
+                                        span= item.Media_Outlet_Name
+                                    span= `${item.Publication_Date.slice(0, 2)}/${item.Publication_Date.slice(2, 4)}/${item.Publication_Date.slice(4)}`
+                            .article!= item.Article
+            include includes/footer
+                    

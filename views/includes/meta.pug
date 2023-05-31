@@ -1,0 +1,29 @@
+- let baseUrl = 'https://kendrajaymes.com'
+
+meta(charset='UTF-8')
+base(href= baseUrl)
+meta(name='description', content= metaDescription)
+meta(name='keywords', content= content.metadata.Keywords.join(', '))
+meta(name='author', content= content.metadata.Site_Author)
+meta(name='viewport', content='width=device-width, initial-scale=1', user-scalable=no)
+meta(name='robots', content='index, follow')
+
+if (content.project)
+    title= content.metadata.Site_Name
+    meta(property='og:title', content= content.metadata.Site_Name + ' | ' + content.project.Title + ' - ' + content.project.Subtitle)
+    meta(property='og:image', content= '/assets/' + content.project.Thumbnail.id)
+    meta(property='og:image:width', content= content.project.Thumbnail.width)
+    meta(property='og:image:height', content= content.project.Thumbnail.height)
+    meta(property='og:url', content= baseUrl + '/' + content.project.slug)
+else 
+    title= pageTitle
+    meta(property='og:title', content= content.metadata.Site_Name)
+    meta(property='og:image', content= metaImg)
+    meta(property='og:image:width', content= metaImgWidth)
+    meta(property='og:image:height', content= metaImgHeight)
+    meta(property='og:url', content= baseUrl + slug)
+meta(property='og:site_name', content= content.metadata.Site_Name)
+meta(property='og:type', content='website:portfolio')
+meta(property='og:description', content= metaDescription)
+if (content.metadata.Facebook_APP_ID)
+    meta(property='fb:app_id', content= content.metadata.Facebook_APP_ID)
