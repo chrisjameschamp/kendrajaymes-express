@@ -70,13 +70,21 @@ $(function () {
   }
 });
 
+// Voiceover Demo Reel Video
+$(function () {
+  const demo = new Plyr('#demo', {
+    controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+    settings: [],
+  });
+});
+
 // Portfolio Open Video
 $(function () {
   $('ul.portfolio a').click(function (e) {
     e.preventDefault();
     changePageInfo('/' + $(this).data('slug'), $(this).data('pagetitle'), $(this).data('thumbnail'))
     $(this).addClass('active');
-    $('#overlay > div .video').append('<div id="player" class="plyr__video-embed"><iframe src="' + $(this).attr('href') + '?autoplay=1" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>');
+    $('#overlay > div .video').append('<div id="player" class="plyr__video-embed"><iframe src="' + $(this).attr('href') + '?autoplay=1" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="autoplay; fullscreen; picture-in-picture"></iframe></div>');
     const player = new Plyr('#player', {
       controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
       settings: [],

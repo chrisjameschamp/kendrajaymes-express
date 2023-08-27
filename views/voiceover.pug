@@ -1,0 +1,40 @@
+include includes/mixins
+
+doctype html
+html(lang="en")
+    head
+        - var pageTitle = content.metadata.Site_Name + ' - Voiceover'
+        - var metaImg = '/assets/' + content.metadata.Metadata_Image.id + '/' + content.metadata.Metadata_Image.filename_download
+        - var metaImgWidth = content.metadata.Metadata_Image.width
+        - var metaImgHeight = content.metadata.Metadata_Image.height
+        - var metaDescription = content.metadata.Description
+        - var slug = '/voiceover/'
+        include includes/meta
+        include includes/payload
+
+    body
+        #wrapper
+            include includes/header
+            #content
+                .voiceover 
+                    .title
+                        span Kendra Jaymes
+                        |  Commercial Demo Reel
+                    .video
+                        #demo.plyr__video-embed
+
+                            - var domainMatch = content.voiceover.Demo_Reel_URL.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)/im);
+                            - var domain = domainMatch && domainMatch[1]
+                            if (domain === 'vimeo.com')
+                                - content.voiceover.Demo_Reel_URL = content.voiceover.Demo_Reel_URL.substring(content.voiceover.Demo_Reel_URL.lastIndexOf('/') + 1)
+                                - content.voiceover.Demo_Reel_URL = 'https://player.vimeo.com/video/' + content.voiceover.Demo_Reel_URL
+                                - content.voiceover.Domain = 'vimeo'
+                            else if (domain === 'youtube.com')
+                                - var idMatch = content.voiceover.Demo_Reel_URL.match(/(?:\?|\&)v=([^&]+)/);
+                                - content.voiceover.Demo_Reel_URL = idMatch && idMatch[1]
+                                - content.voiceover.Demo_Reel_URL = 'https://www.youtube.com/embed/' + content.voiceover.Demo_Reel_URL
+                                - content.voiceover.Domain = 'youtube'
+
+                            iframe(src= content.voiceover.Demo_Reel_URL, frameborder='0', webkitallowfullscreen, mozallowfullscreen, allowfullscreen, allow='autoplay; fullscreen; picture-in-picture')
+            include includes/footer
+                    

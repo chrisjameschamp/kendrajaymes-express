@@ -38,6 +38,10 @@ app.use(metadata)
 const pressRouter = require('./routes/press')
 app.use('/press/', pressRouter)
 
+// Voiceover
+const voRouter = require('./routes/voiceover')
+app.use('/voiceover/', voRouter)
+
 // Routes
 const portfolioRouter = require('./routes/portfolio')
 app.use('/', portfolioRouter)
